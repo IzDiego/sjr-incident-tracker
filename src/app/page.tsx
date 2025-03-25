@@ -5,6 +5,7 @@ import IncidentTable from './components/IncidentTable';
 import IncidentForm from './components/IncidentForm';
 import IncidentDetails from './components/IncidentDetails';
 import UserForm from './components/UserForm';
+import Modal from './components/Modal';
 import { Status } from '@prisma/client';
 import { ZodIssue } from 'zod';
 
@@ -206,38 +207,34 @@ export default function Home() {
         onCreateUser={() => setIsUserModalOpen(true)}
       />
 
-      {isIncidentModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-2xl w-full">
-            <IncidentForm
-              onSubmit={handleCreateIncident}
-              onCancel={() => setIsIncidentModalOpen(false)}
-            />
-          </div>
+      <Modal isOpen={isIncidentModalOpen} onClose={() => setIsIncidentModalOpen(false)} maxWidth="2xl">
+        <div className="p-6">
+          <IncidentForm
+            onSubmit={handleCreateIncident}
+            onCancel={() => setIsIncidentModalOpen(false)}
+          />
         </div>
-      )}
+      </Modal>
 
-      {isUserModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <UserForm
-              onSubmit={handleCreateUser}
-              onCancel={() => setIsUserModalOpen(false)}
-            />
-          </div>
+      <Modal isOpen={isUserModalOpen} onClose={() => setIsUserModalOpen(false)} maxWidth="md">
+        <div className="p-6">
+          <UserForm
+            onSubmit={handleCreateUser}
+            onCancel={() => setIsUserModalOpen(false)}
+          />
         </div>
-      )}
+      </Modal>
 
-      {selectedIncident && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-2xl w-full">
+      <Modal isOpen={!!selectedIncident} onClose={() => setSelectedIncident(null)} maxWidth="2xl">
+        <div className="p-6">
+          {selectedIncident && (
             <IncidentDetails
               incident={selectedIncident}
               onClose={() => setSelectedIncident(null)}
             />
-          </div>
+          )}
         </div>
-      )}
+      </Modal>
     </main>
   );
 }
