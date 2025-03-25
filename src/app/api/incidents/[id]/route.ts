@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { Status } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
@@ -8,16 +8,13 @@ const updateSchema = z.object({
   userId: z.string().nullable().optional(),
 });
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const body = await request.json();
     const validatedData = updateSchema.parse(body);
 
     const incident = await prisma.incident.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: validatedData,
       include: {
         assignedTo: true,
@@ -41,26 +38,31 @@ export async function PATCH(
 }
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const incident = await prisma.incident.findUnique({
       where: {
-        id: params.id,
+        id: (await params).id,
+      },
+      include: {
+        assignedTo: true,
       },
     });
+
     if (!incident) {
       return NextResponse.json(
         { error: 'Incident not found' },
         { status: 404 }
       );
     }
+
     return NextResponse.json(incident);
   } catch (error) {
     console.error('Error fetching incident:', error);
     return NextResponse.json(
-      { error: 'Error fetching incident' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
