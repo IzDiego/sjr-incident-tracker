@@ -51,7 +51,7 @@ export default function IncidentTable({
                 <span>Assigned To</span>
                 <button
                   onClick={onCreateUser}
-                  className="inline-flex items-center px-2 py-1 text-xs font-medium text-indigo-600 hover:text-indigo-900"
+                  className="inline-flex cursor-pointer items-center px-2 py-1 text-xs font-medium text-indigo-600 hover:text-indigo-900"
                 >
                   <svg
                     className="w-4 h-4 mr-1"
