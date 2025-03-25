@@ -1,3 +1,6 @@
+Vercel link: https://sjr-incident-tracker.vercel.app/
+Trello Link: https://trello.com/invite/b/67e20a958e9ed6a969578027/ATTIb9b4446c63b3d6e9ea58ceb2f4fc82fc6BE9A1DF/kanban-sjr
+
 # Incident Tracking System
 
 A full-stack application for tracking and managing technical incidents in an organization. Built with Next.js, Prisma, and PostgreSQL.
