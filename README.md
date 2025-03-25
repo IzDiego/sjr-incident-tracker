@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Incident Tracking System
+
+A full-stack application for tracking and managing technical incidents in an organization. Built with Next.js, Prisma, and PostgreSQL.
+
+## Features
+
+- Create and manage technical incidents
+- Track incident status and priority
+- Responsive design with Tailwind CSS
+- Real-time updates
+- User assignment system
+- Secure API endpoints
+
+## Tech Stack
+
+- **Frontend**: Next.js, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes
+- **Database**: PostgreSQL with Prisma ORM
+- **Deployment**: Vercel
+- **CI/CD**: GitHub Actions
+
+## Prerequisites
+
+- Node.js (v20 or later)
+- Docker and Docker Compose
+- npm or yarn
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd sjr-incident-tracker
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Start the PostgreSQL database:
+   ```bash
+   docker-compose up -d
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Set up environment variables:
+   The `.env` file is already configured for the Docker database setup. If you need to modify it:
+   ```
+   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/incident_db?schema=public"
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+5. Initialize the database:
+   ```bash
+   npx prisma migrate dev
+   ```
 
-## Learn More
+6. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Database Management
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Using Docker
 
-## Deploy on Vercel
+- Start the database: `docker-compose up -d`
+- Stop the database: `docker-compose down`
+- View logs: `docker-compose logs postgres`
+- Access PostgreSQL CLI: `docker exec -it incident-tracker-db psql -U postgres -d incident_db`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Using Prisma
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Create a migration: `npx prisma migrate dev`
+- Reset database: `npx prisma migrate reset`
+- View data in Prisma Studio: `npx prisma studio`
+
+## Database Schema
+
+The application uses the following main models:
+
+- **Incident**: Stores incident information including title, description, priority, and status
+- **User**: Manages user information and assignments
+
+## API Routes
+
+- `POST /api/incidents`: Create a new incident
+- `GET /api/incidents`: List all incidents
+- `PATCH /api/incidents/[id]`: Update incident status
+- `GET /api/incidents/[id]`: Get incident details
+
+## Development
+
+- Run tests: `npm test`
+- Check types: `npm run typecheck`
+- Lint code: `npm run lint`
+
+## Deployment
+
+The application is automatically deployed to Vercel through GitHub Actions when changes are pushed to the main branch.
+
+Required environment variables for deployment:
+- `DATABASE_URL`
+- `VERCEL_TOKEN`
+- `VERCEL_ORG_ID`
+- `VERCEL_PROJECT_ID`
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
